@@ -7,7 +7,7 @@ RUN yum -y update
 RUN yum -y install unzip
 RUN yum -y install java-1.7.0-openjdk-devel
 
-# Install JDG
+# Install EAP
 ADD products/jboss-eap-6.2.0.zip /opt/jboss/
 RUN unzip /opt/jboss/jboss-eap-6.2.0.zip -d /opt/jboss
 RUN rm /opt/jboss/jboss-eap-6.2.0.zip
