@@ -1,30 +1,23 @@
-FROM centos:6.4
+FROM jboss-base
 
 MAINTAINER David Murphy <dmurphy@redhat.com>
 
-# Update, Install Java, Install unzip
-RUN yum -y update
-RUN yum -y install unzip
-RUN yum -y install java-1.7.0-openjdk-devel
-
 # Install EAP
-ADD products/jboss-eap-6.2.0.zip /opt/jboss/
-RUN unzip /opt/jboss/jboss-eap-6.2.0.zip -d /opt/jboss
-RUN rm /opt/jboss/jboss-eap-6.2.0.zip
+ADD products/jboss-eap-6.2.0.zip /
+RUN unzip jboss-eap-6.2.0.zip -d /opt/jboss
+RUN chown -hR jboss:jboss /opt/jboss/jboss-eap-6.2
+RUN rm jboss-eap-6.2.0.zip
+ENV JBOSS_PIDFILE run.pid
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+ADD files/launch.sh /
 
 # Expose Ports
 ## Management
-EXPOSE 9999 9990 9443 
+EXPOSE 9999 9990 9443 7600 57600
 ## WEB
 EXPOSE 8080 8443 8009
 
-# Add user
-RUN /opt/jboss/jboss-eap-6.2/bin/add-user.sh admin passw0rd_ --silent
+# Configure supervisor
+ADD files/supervisor.ini /etc/supervisord.d/eap.ini
 
-# Add files
-ADD files/launch.sh /
-RUN chmod +x /launch.sh
-
-# Launch
-ENTRYPOINT /launch.sh
-
+CMD supervisord -n
