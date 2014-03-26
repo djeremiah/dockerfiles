@@ -13,9 +13,9 @@ ADD files/launch.sh /
 
 # Expose Ports
 ## Management
-EXPOSE 9999 9990 9443 7600 57600
+EXPOSE 9999
 ## WEB
-EXPOSE 8080 8443 8009
+EXPOSE 8080
 
 # Configure supervisor
 ADD files/supervisor.ini /etc/supervisord.d/eap.ini
