@@ -38,6 +38,7 @@ RUN chown -hR jboss:jboss /opt/jon
 # Clean up
 RUN rm configure_dbs.sh
 RUN rm jon-server-3.2.0.GA.zip
+RUN rm -rf plugins plugin-jars
 
 # Configure Supervisor
 ADD files/supervisor.ini /etc/supervisord.d/jon.ini
